@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Business Agent Readiness Assessment</title>
+<meta name="description" content="A Muse-first readiness assessment for businesses adopting AI business agents: Meta Business Agent, WhatsApp business messaging, and Muse-powered agents. Built on the AGENT Framework by Greg Lucas.">
+<style>
+  :root{
+    --ink:#101418; --muted:#5a6672; --line:#dde3ea; --bg:#f6f8fb;
+    --blue:#0064e0; --blue-dark:#004fa3; --card:#ffffff;
+    --good:#1a7f4b; --warn:#b97d0a; --bad:#b3261e;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;background:var(--bg);color:var(--ink);line-height:1.55}
+  .wrap{max-width:880px;margin:0 auto;padding:32px 20px 64px}
+  header.hero{background:linear-gradient(135deg,#0b1f3a,#0064e0);color:#fff;border-radius:16px;padding:36px 32px;margin-bottom:24px}
+  header.hero h1{margin:0 0 8px;font-size:2rem;line-height:1.15}
+  header.hero p{margin:0;opacity:.92;max-width:640px}
+  header.hero .byline{margin-top:14px;font-size:.9rem;opacity:.8}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:24px;margin-bottom:20px}
+  h2{margin:0 0 10px;font-size:1.25rem}
+  h3{margin:18px 0 6px;font-size:1.05rem}
+  p.lede{color:var(--muted);margin:0 0 8px}
+  .dims{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin-top:14px}
+  .dim-chip{border:1px solid var(--line);border-radius:10px;padding:10px 12px;background:#fbfcfe}
+  .dim-chip b{display:block;color:var(--blue-dark)}
+  .dim-chip span{font-size:.85rem;color:var(--muted)}
+  fieldset{border:1px solid var(--line);border-radius:12px;padding:16px;margin:0 0 16px}
+  fieldset.missing{border-color:var(--bad);background:#fdf3f2}
+  legend{font-weight:700;padding:0 6px;color:var(--blue-dark)}
+  .q{margin:14px 0}
+  .q p{margin:0 0 8px;font-weight:550}
+  .opts{display:flex;flex-wrap:wrap;gap:8px}
+  .opts label{border:1px solid var(--line);border-radius:999px;padding:6px 12px;cursor:pointer;font-size:.9rem;background:#fff}
+  .opts input{margin-right:6px;accent-color:var(--blue)}
+  .opts label:has(input:checked){border-color:var(--blue);background:#e8f1fd;font-weight:600}
+  button{appearance:none;border:0;border-radius:10px;background:var(--blue);color:#fff;font-size:1rem;font-weight:650;padding:13px 22px;cursor:pointer}
+  button:hover{background:var(--blue-dark)}
+  button.secondary{background:#fff;color:var(--blue-dark);border:1px solid var(--blue)}
+  .error{display:none;color:var(--bad);font-weight:600;margin-top:12px}
+  #results{display:none}
+  .score-head{display:flex;flex-wrap:wrap;gap:20px;align-items:center}
+  .score-big{font-size:3.2rem;font-weight:800;line-height:1;color:var(--blue-dark)}
+  .stage-badge{display:inline-block;background:#e8f1fd;color:var(--blue-dark);border-radius:999px;padding:4px 14px;font-weight:700}
+  .bar-row{display:grid;grid-template-columns:130px 1fr 44px;gap:10px;align-items:center;margin:8px 0}
+  .bar{height:12px;background:#edf1f6;border-radius:6px;overflow:hidden}
+  .bar i{display:block;height:100%;background:var(--blue)}
+  ul.plan{margin:6px 0 0;padding-left:20px}
+  ul.plan li{margin:5px 0}
+  .status{font-weight:700}
+  .status.ok{color:var(--good)} .status.partial{color:var(--warn)} .status.missing{color:var(--bad)}
+  .actions-row{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}
+  footer{color:var(--muted);font-size:.9rem;text-align:center;margin-top:28px}
+  a{color:var(--blue-dark)}
+  @media (max-width:560px){ .bar-row{grid-template-columns:100px 1fr 40px} header.hero{padding:26px 20px} }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="hero">
+    <h1>Business Agent Readiness</h1>
+    <p>Score your business for AI agent adoption in about three minutes. Muse-first by design: the plan you get centers on deploying Muse-powered agents and Meta Business Agent on the channels your customers already use, starting with WhatsApp.</p>
+    <p class="byline">An open toolkit by Greg Lucas, Muse early adopter and advocate. Companion to Muse Exchange and MuSe SIM.</p>
+  </header>
+
+  <section class="card">
+    <h2>How it works</h2>
+    <p class="lede">Fifteen questions across the five readiness dimensions of the AGENT Framework. Answer honestly for where your business is today, not where you want it to be. You get a score per dimension, an overall readiness score, a maturity stage, and a prioritized adoption plan with governance checks and a channel plan.</p>
+    <div class="dims">
+      <div class="dim-chip"><b>Acumen</b><span>Know where agents create value</span></div>
+      <div class="dim-chip"><b>Governance</b><span>Owners, approval gates, kill switch</span></div>
+      <div class="dim-chip"><b>Evaluation</b><span>Measure agent work like staff work</span></div>
+      <div class="dim-chip"><b>Navigation</b><span>Channels, rollout, and change</span></div>
+      <div class="dim-chip"><b>Transformation</b><span>Redesign workflows around agents</span></div>
+    </div>
+  </section>
+
+  <form id="assessment" class="card" novalidate>
+    <h2>The assessment</h2>
+    <p class="lede">Scale for every question: Not started (0), Ad hoc (1), In progress (2), Mostly in place (3), In place and measured (4).</p>
+    <div id="questions"></div>
+    <button type="submit">Score my readiness</button>
+    <p class="error" id="formError"></p>
+  </form>
+
+  <section id="results" class="card" aria-live="polite">
+    <h2>Your readiness report</h2>
+    <div class="score-head">
+      <div><div class="score-big" id="overallScore">0</div><div class="lede">Overall readiness, out of 100</div></div>
+      <div><span class="stage-badge" id="stageBadge">Stage 1</span><p class="lede" id="stageBlurb" style="margin-top:8px;max-width:420px"></p></div>
+    </div>
+    <h3>Dimension scores</h3>
+    <div id="dimBars"></div>
+    <h3>Do first: your prioritized plan</h3>
+    <ul class="plan" id="priorityPlan"></ul>
+    <h3>Also on your plan</h3>
+    <ul class="plan" id="secondaryPlan"></ul>
+    <h3>Governance checks</h3>
+    <ul class="plan" id="govChecks"></ul>
+    <h3>Channel plan: WhatsApp, Meta Business Agent, and web</h3>
+    <ul class="plan" id="channelPlan"></ul>
+    <h3>Recommended agent blueprints</h3>
+    <ul class="plan" id="blueprints"></ul>
+    <div class="actions-row">
+      <button type="button" id="copyPlan">Copy plan as text</button>
+      <button type="button" class="secondary" id="retake">Retake the assessment</button>
+    </div>
+    <p class="lede" id="copyNote" style="margin-top:10px"></p>
+  </section>
+
+  <footer>
+    Business Agent Readiness is part of an open portfolio on safe, governed agentic AI:
+    <a href="https://muse-exchange.vercel.app">Muse Exchange</a>,
+    <a href="https://muse-sim.vercel.app">MuSe SIM</a>,
+    <a href="https://github.com/THFC-COYS/agentlint">agentlint</a>.
+    Built by <a href="https://www.linkedin.com/in/greg-lucas-28765b416/">Greg Lucas</a> (pAIgeBreaker, AIccountable). MIT licensed.
+  </footer>
+</div>
+
+<script>
+"use strict";
+/* ---------- Data ---------- */
+var SCALE = [
+  { v: 0, label: "Not started" },
+  { v: 1, label: "Ad hoc" },
+  { v: 2, label: "In progress" },
+  { v: 3, label: "Mostly in place" },
+  { v: 4, label: "In place and measured" }
+];
+
+var DIMENSIONS = [
+  { id: "acumen", name: "Acumen", focus: "Know where agents create value",
+    questions: [
+      "You can name the top three customer conversations an agent should handle first, and the business reason for each.",
+      "Your team has mapped the questions customers ask most across WhatsApp, phone, email, and your website.",
+      "Frontline staff can explain what the agent does, what it must never do, and when a human takes over."
+    ] },
+  { id: "governance", name: "Governance", focus: "Owners, approval gates, kill switch",
+    questions: [
+      "Every live agent has a named human owner and appears in a written agent census.",
+      "Agents need human approval before sensitive actions: refunds, discounts, price commitments, contract terms, or sharing sensitive data.",
+      "Every agent has a kill switch and a human handoff path that staff have actually tested."
+    ] },
+  { id: "evaluation", name: "Evaluation", focus: "Measure agent work like staff work",
+    questions: [
+      "Someone reviews real agent conversations on a set schedule and scores them for accuracy, tone, and policy fit.",
+      "You track resolution rate, escalation rate, and customer satisfaction for agent conversations separately from human ones.",
+      "Wrong or corrected agent answers feed back into the agent's knowledge within a week."
+    ] },
+  { id: "navigation", name: "Navigation", focus: "Channels, rollout, and change",
+    questions: [
+      "You have a written rollout plan: one channel first, a small pilot group, and clear go or no-go criteria.",
+      "Your WhatsApp Business account, Meta Business settings, and website are ready to connect an agent.",
+      "Staff know how the agent changes their daily work, and a named person owns training and questions during rollout."
+    ] },
+  { id: "transformation", name: "Transformation", focus: "Redesign workflows around agents",
+    questions: [
+      "At least one end-to-end workflow (booking, intake, ordering, support) has been redesigned around an agent, not just bolted onto the old process.",
+      "Agent results show up in the same business reviews as revenue, cost, and customer satisfaction.",
+      "You have a plan to extend agents to a second workflow or channel within the next two quarters."
+    ] }
+];
+
+var STAGES = {
+  1: { name: "Stage 1: Explore", blurb: "You are curious and early. The win at this stage is one safe, narrow agent on one channel, with a human watching closely." },
+  2: { name: "Stage 2: Pilot", blurb: "Foundations are forming. Run a real pilot on WhatsApp with a small customer group, measure it, and fix the gaps it exposes." },
+  3: { name: "Stage 3: Deploy", blurb: "You are ready to put agents in front of most customers on your main channels, with governance and measurement running as routine." },
+  4: { name: "Stage 4: Transform", blurb: "Agents are part of how the business runs. Focus on scale: more workflows, proactive agents, and cloning proven blueprints to new lines of business." }
+};
+
+var ACTIONS = {
+  acumen: {
+    low:  ["Run a one-hour value mapping session: list the 20 questions customers ask most, and mark which ones an agent can answer from approved information today.",
+           "Pick one front-door use case with a clear payoff (faster first response, fewer missed messages) and write down the baseline numbers before you build anything."],
+    mid:  ["Turn your top use cases into written agent briefs: audience, approved knowledge sources, tone, and the exact moment a human takes over.",
+           "Brief every customer-facing employee on the agent's scope, and collect their top objections and edge cases into the pilot test set."],
+    high: ["Publish a one-page agent value map for the whole business: where agents work today, the results they produce, and the next three opportunities ranked by payoff."]
+  },
+  governance: {
+    low:  ["Create your agent census today: one page listing every planned agent, its owner by name, its channels, and what it is allowed to do.",
+           "Set the two non-negotiables before launch: approval gates on refunds, discounts, and commitments, and a kill switch with a named human who can pull it."],
+    mid:  ["Write the approval matrix: which agent actions are automatic, which need a human tap, and which are never allowed. Test the kill switch with a live drill.",
+           "Set customer data rules in writing: what the agent may read, what it may store, what it may never send, and how long conversation data is kept."],
+    high: ["Audit the census quarterly with agentlint-style checks: permissions scoped, secrets out of prompts, logging on, owner current. Publish the audit result internally."]
+  },
+  evaluation: {
+    low:  ["Start a weekly 30-minute conversation review: read 20 real agent conversations, score accuracy and tone, and log every miss in one shared list.",
+           "Define your three numbers now: resolution rate, escalation rate, and a one-question customer satisfaction check after agent conversations."],
+    mid:  ["Turn the miss log into a weekly knowledge update: corrections ship to the agent's knowledge base within seven days, owned by a named person.",
+           "Add a red-team pass before each launch: test the agent with your hardest, rudest, and most confusing real customer questions."],
+    high: ["Report agent performance next to human performance in the regular business review, with cost per resolved conversation and trend lines by channel."]
+  },
+  navigation: {
+    low:  ["Write the rollout plan on one page: WhatsApp first, one location or customer segment as the pilot, two to four weeks, and explicit go or no-go criteria.",
+           "Claim and verify your WhatsApp Business number and Meta Business settings now, even before the agent is built, so launch is not blocked by account setup."],
+    mid:  ["Train the pilot team: how the agent changes their day, what to watch, and where to send feedback. Give the rollout a single named owner.",
+           "Prepare customers: a short message that introduces the agent, says what it can do, and makes reaching a human effortless."],
+    high: ["Run the channel playbook as a repeatable launch system: pilot, measure, expand. Each new channel or location reuses the same checklist and criteria."]
+  },
+  transformation: {
+    low:  ["Choose one workflow to redesign end to end around the agent (booking, intake, ordering, or support) instead of adding a chat box to the old process.",
+           "Remove one manual step the agent makes unnecessary, and give the saved time a named new job: follow-ups, quality checks, or revenue work."],
+    mid:  ["Rebuild that workflow's handoffs: the agent gathers, drafts, and routes; humans decide and own the relationship. Document the new process where staff actually work.",
+           "Put agent results on the business scorecard: volume handled, resolution, satisfaction, and staff hours redirected."],
+    high: ["Extend to a second workflow using the same blueprint pattern, and clone the proven setup to new locations or service lines with the governance pack attached."]
+  }
+};
+
+var GOV_STATIC_CHECKS = [
+  "Customer data rules written: what the agent may read, store, and send",
+  "Escalation path published to customers: a human is always reachable",
+  "Weekly conversation review scheduled and owned by a named person"
+];
+
+/* ---------- Pure logic (also testable outside the browser) ---------- */
+function dimensionScore(values) {
+  var raw = 0, i;
+  for (i = 0; i < values.length; i++) raw += values[i];
+  return Math.round((raw / (values.length * 4)) * 100);
+}
+
+function stageFor(overall) {
+  if (overall >= 75) return 4;
+  if (overall >= 50) return 3;
+  if (overall >= 25) return 2;
+  return 1;
+}
+
+function bandFor(score) {
+  if (score < 40) return "low";
+  if (score < 70) return "mid";
+  return "high";
+}
+
+function statusFor(v) {
+  if (v >= 3) return { cls: "ok", text: "In place" };
+  if (v >= 1) return { cls: "partial", text: "Partial" };
+  return { cls: "missing", text: "Missing" };
+}
+
+function computeScores(answers) {
+  var dims = {}, total = 0, i, d;
+  for (i = 0; i < DIMENSIONS.length; i++) {
+    d = DIMENSIONS[i];
+    dims[d.id] = dimensionScore(answers[d.id]);
+    total += dims[d.id];
+  }
+  var overall = Math.round(total / DIMENSIONS.length);
+  return { dims: dims, overall: overall, stage: stageFor(overall) };
+}
+
+function buildPlan(answers, scores) {
+  var sorted = DIMENSIONS.slice().sort(function (a, b) { return scores.dims[a.id] - scores.dims[b.id]; });
+  var priority = [], secondary = [], i, d, acts;
+  for (i = 0; i < sorted.length; i++) {
+    d = sorted[i];
+    acts = ACTIONS[d.id][bandFor(scores.dims[d.id])];
+    if (i < 3) {
+      for (var j = 0; j < acts.length; j++) priority.push(d.name + ": " + acts[j]);
+    } else {
+      secondary.push(d.name + ": " + acts[0]);
+    }
+  }
+
+  var gov = answers.governance;
+  var checks = [
+    { label: "Named human owner and written agent census", v: gov[0] },
+    { label: "Approval gates on refunds, discounts, commitments, and sensitive data", v: gov[1] },
+    { label: "Kill switch and human handoff path, tested by staff", v: gov[2] }
+  ];
+  var govOut = checks.map(function (c) {
+    var s = statusFor(c.v);
+    return { label: c.label, cls: s.cls, text: s.text };
+  });
+  GOV_STATIC_CHECKS.forEach(function (label) {
+    govOut.push({ label: label, cls: "", text: "Verify before launch" });
+  });
+
+  var channels = [];
+  if (scores.dims.governance < 50) {
+    channels.push("Hold on scaling channels until the governance checks above pass. A pilot with a human reviewing every conversation is the right size for now.");
+  }
+  channels.push("Phase 1, WhatsApp first: connect Meta Business Agent to the WhatsApp number your customers already message. Load it with approved FAQ knowledge only, and keep a human one tap away.");
+  channels.push("Phase 1, web: add a Muse-powered agent to your website using the same approved knowledge base, so answers stay consistent across channels.");
+  if (scores.stage >= 2) channels.push("Phase 2: extend the same agent to booking, intake, or order status, with approval gates on anything that spends money or makes a promise.");
+  if (scores.stage >= 3) channels.push("Phase 3: turn on proactive follow-ups (reminders, review requests, re-engagement) with human approval on outbound campaigns.");
+  if (scores.stage >= 4) channels.push("Phase 4: run the agent program like a product line: shared knowledge, shared governance pack, cloned blueprints per location or service line.");
+
+  var blueprints = ["Front Door Agent: a Muse-powered agent for WhatsApp and web that answers approved questions, routes everything else to a human, and logs every conversation."];
+  if (scores.stage >= 2) blueprints.push("Booking and Intake Agent: collects the details your team needs, checks availability, and hands a clean summary to a human who confirms.");
+  if (scores.stage >= 3) blueprints.push("Follow-Up Agent: reminders, review requests, and re-engagement messages, sent only inside approval rules you set.");
+  if (scores.stage >= 4) blueprints.push("Operations Copilot: an internal Muse agent for staff (summaries, drafts, lookups) running under the same census, gates, and kill switch as your customer agents.");
+  if (scores.dims.governance < 50) blueprints.push("Governance Starter Kit: census template, approval matrix, and kill-switch drill. Run this blueprint before any customer-facing launch.");
+  blueprints.push("Every blueprint follows the pattern proven on Muse Exchange: scoped tools, approval gates, logging, and a named owner.");
+
+  return { priority: priority, secondary: secondary, governance: govOut, channels: channels, blueprints: blueprints };
+}
+
+function planAsText(answers, scores, plan) {
+  var lines = [];
+  lines.push("BUSINESS AGENT READINESS REPORT");
+  lines.push("Overall score: " + scores.overall + "/100");
+  lines.push("Maturity stage: " + STAGES[scores.stage].name);
+  lines.push("");
+  lines.push("Dimension scores:");
+  DIMENSIONS.forEach(function (d) { lines.push("- " + d.name + ": " + scores.dims[d.id] + "/100"); });
+  lines.push("");
+  lines.push("Do first:");
+  plan.priority.forEach(function (s) { lines.push("- " + s); });
+  lines.push("");
+  lines.push("Also on your plan:");
+  plan.secondary.forEach(function (s) { lines.push("- " + s); });
+  lines.push("");
+  lines.push("Governance checks:");
+  plan.governance.forEach(function (c) { lines.push("- [" + c.text + "] " + c.label); });
+  lines.push("");
+  lines.push("Channel plan:");
+  plan.channels.forEach(function (s) { lines.push("- " + s); });
+  lines.push("");
+  lines.push("Recommended agent blueprints:");
+  plan.blueprints.forEach(function (s) { lines.push("- " + s); });
+  lines.push("");
+  lines.push("Generated by Business Agent Readiness (AGENT Framework) by Greg Lucas.");
+  return lines.join("\n");
+}
+
+/* ---------- Browser wiring ---------- */
+if (typeof document !== "undefined") {
+  var questionsEl = document.getElementById("questions");
+  DIMENSIONS.forEach(function (d) {
+    var fs = document.createElement("fieldset");
+    fs.id = "fs-" + d.id;
+    var legend = document.createElement("legend");
+    legend.textContent = d.name + " · " + d.focus;
+    fs.appendChild(legend);
+    d.questions.forEach(function (q, qi) {
+      var div = document.createElement("div");
+      div.className = "q";
+      var p = document.createElement("p");
+      p.textContent = q;
+      div.appendChild(p);
+      var opts = document.createElement("div");
+      opts.className = "opts";
+      SCALE.forEach(function (s) {
+        var label = document.createElement("label");
+        var input = document.createElement("input");
+        input.type = "radio";
+        input.name = d.id + "-" + qi;
+        input.value = s.v;
+        label.appendChild(input);
+        label.appendChild(document.createTextNode(s.label));
+        opts.appendChild(label);
+      });
+      div.appendChild(opts);
+      fs.appendChild(div);
+    });
+    questionsEl.appendChild(fs);
+  });
+
+  var lastReport = null;
+
+  document.getElementById("assessment").addEventListener("submit", function (ev) {
+    ev.preventDefault();
+    var answers = {}, missing = [];
+    DIMENSIONS.forEach(function (d) {
+      answers[d.id] = [];
+      d.questions.forEach(function (q, qi) {
+        var sel = document.querySelector('input[name="' + d.id + "-" + qi + '"]:checked');
+        document.getElementById("fs-" + d.id).classList.remove("missing");
+        if (!sel) { missing.push(d.id); answers[d.id].push(0); }
+        else answers[d.id].push(parseInt(sel.value, 10));
+      });
+    });
+    var err = document.getElementById("formError");
+    if (missing.length) {
+      var uniq = missing.filter(function (v, i) { return missing.indexOf(v) === i; });
+      uniq.forEach(function (id) { document.getElementById("fs-" + id).classList.add("missing"); });
+      err.style.display = "block";
+      err.textContent = "Please answer every question. Missing answers are highlighted above.";
+      return;
+    }
+    err.style.display = "none";
+
+    var scores = computeScores(answers);
+    var plan = buildPlan(answers, scores);
+    lastReport = planAsText(answers, scores, plan);
+
+    document.getElementById("overallScore").textContent = scores.overall;
+    document.getElementById("stageBadge").textContent = STAGES[scores.stage].name;
+    document.getElementById("stageBlurb").textContent = STAGES[scores.stage].blurb;
+
+    var bars = document.getElementById("dimBars");
+    bars.innerHTML = "";
+    DIMENSIONS.forEach(function (d) {
+      var row = document.createElement("div");
+      row.className = "bar-row";
+      var name = document.createElement("span"); name.textContent = d.name;
+      var bar = document.createElement("div"); bar.className = "bar";
+      var fill = document.createElement("i"); fill.style.width = scores.dims[d.id] + "%";
+      bar.appendChild(fill);
+      var val = document.createElement("span"); val.textContent = scores.dims[d.id];
+      row.appendChild(name); row.appendChild(bar); row.appendChild(val);
+      bars.appendChild(row);
+    });
+
+    function fillList(id, items, isGov) {
+      var ul = document.getElementById(id);
+      ul.innerHTML = "";
+      items.forEach(function (item) {
+        var li = document.createElement("li");
+        if (isGov) {
+          var st = document.createElement("span");
+          st.className = "status " + item.cls;
+          st.textContent = item.text + ": ";
+          li.appendChild(st);
+          li.appendChild(document.createTextNode(item.label));
+        } else {
+          li.textContent = item;
+        }
+        ul.appendChild(li);
+      });
+    }
+    fillList("priorityPlan", plan.priority, false);
+    fillList("secondaryPlan", plan.secondary, false);
+    fillList("govChecks", plan.governance, true);
+    fillList("channelPlan", plan.channels, false);
+    fillList("blueprints", plan.blueprints, false);
+
+    var results = document.getElementById("results");
+    results.style.display = "block";
+    document.getElementById("copyNote").textContent = "";
+    results.scrollIntoView({ behavior: "smooth" });
+  });
+
+  document.getElementById("copyPlan").addEventListener("click", function () {
+    var note = document.getElementById("copyNote");
+    if (!lastReport) return;
+    function done() { note.textContent = "Plan copied. Paste it into your notes or share it with your team."; }
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(lastReport).then(done, function () { note.textContent = "Copy was blocked by the browser. Select the report on screen instead."; });
+    } else {
+      note.textContent = "Clipboard is not available in this browser. Select the report on screen instead.";
+    }
+  });
+
+  document.getElementById("retake").addEventListener("click", function () {
+    document.getElementById("assessment").reset();
+    document.getElementById("results").style.display = "none";
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  });
+}
+</script>
+</body>
+</html>
